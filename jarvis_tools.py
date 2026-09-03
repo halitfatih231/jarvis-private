@@ -563,15 +563,15 @@ def uygulama_kapat(
             "Hangi uygulamayı kapatacağımı anlayamadım."
         )
 
-    hedef = PROCESS_ESLEME.get(
-        q
-    )
-
+    # Retrieve mapping; if missing, try to discover the process.
+    hedef = PROCESS_ESLEME.get(q)
     if hedef is None:
-
-        hedef = surec_eslesmesi_bul(
-            uygulama
-        )
+        hedef = surec_eslesmesi_bul(uygulama)
+        if not hedef:
+            return sonuc(
+                False,
+                "Uygulama adı bulunamadı."
+            )
 
         if hedef is None:
 
@@ -671,6 +671,8 @@ def windows_ayarlari_ac():
 
     try:
 
+        if os.name != "nt":
+            raise OSError("Windows settings can only be opened on Windows platforms.")
         os.startfile(
             "ms-settings:"
         )
@@ -1165,14 +1167,13 @@ def yerel_hedef_bul(
             HOME / "Jarvis",
     }
 
-    q = norm(
-        sorgu
-    )
+    q = norm(sorgu)
 
-    if q in ozel:
+    # Normalize special folder keys to improve matching across variations
+    ozel_norm = {norm(k): v for k, v in ozel.items()}
 
-        yol = ozel[q]
-
+    if q in ozel_norm:
+        yol = ozel_norm[q]
         if yol.exists():
             return yol
 
@@ -1757,6 +1758,122 @@ def yerel_sil(
 # ANA ARAC YONETICISI
 # ============================================================
 
+def uygulama_durumu_sorgula(app):
+    app = str(app or "").strip()
+    if not app:
+        return sonuc(False, "Hangi uygulamayi sorgulayacagimi anlayamadim.")
+
+    surecler = [str(ad) for ad in calisan_surecler() if str(ad).strip()]
+    hedef = PROCESS_ESLEME.get(norm(app))
+
+    if hedef:
+        calisiyor = any(ad.casefold() == str(hedef).casefold() for ad in surecler)
+        return sonuc(
+            True,
+            f"{app} {'calisiyor' if calisiyor else 'calismiyor'}.",
+            {"running": calisiyor, "process": hedef if calisiyor else None},
+        )
+
+    eslesme = surec_eslesmesi_bul(app)
+    calisiyor = eslesme is not None
+    return sonuc(
+        True,
+        f"{app} {'calisiyor' if calisiyor else 'calismiyor'}.",
+        {"running": calisiyor, "process": eslesme},
+    )
+
+
+
+
+def disk_bilgisi():
+    try:
+        kullanim = shutil.disk_usage(HOME)
+        return sonuc(
+            True,
+            "Disk bilgisi alindi.",
+            {"total": int(kullanim.total), "used": int(kullanim.used), "free": int(kullanim.free)},
+        )
+    except Exception as e:
+        return sonuc(False, f"Disk bilgisi alinamadi: {e}")
+
+
+
+
+def bilinen_klasorleri_goster():
+    klasorler = {
+        "desktop": HOME / "Desktop",
+        "documents": HOME / "Documents",
+        "downloads": HOME / "Downloads",
+        "pictures": HOME / "Pictures",
+        "music": HOME / "Music",
+        "videos": HOME / "Videos",
+        "onedrive": HOME / "OneDrive",
+        "jarvis": HOME / "Jarvis",
+    }
+    veri = {
+        ad: {"path": str(yol), "exists": bool(yol.exists())}
+        for ad, yol in klasorler.items()
+    }
+    return sonuc(True, "Bilinen klasor bilgileri alindi.", veri)
+
+
+
+
+def yerel_hedef_metalari(sorgu):
+    sorgu = str(sorgu or "").strip()
+    if not sorgu:
+        return sonuc(False, "Metadata icin dosya veya klasor belirtilmedi.")
+
+    yol = yerel_hedef_bul(sorgu)
+    if yol is None:
+        return sonuc(False, f"{sorgu} bulunamadi.")
+
+    try:
+        st = yol.stat()
+    except Exception as e:
+        return sonuc(False, f"Metadata alinamadi: {e}")
+
+    if yol.is_file():
+        tur = "file"
+    elif yol.is_dir():
+        tur = "directory"
+    else:
+        tur = "other"
+
+    return sonuc(
+        True,
+        "Metadata alindi.",
+        {
+            "name": yol.name,
+            "path": str(yol),
+            "type": tur,
+            "size": int(st.st_size),
+            "mtime": float(st.st_mtime),
+        },
+    )
+
+
+
+
+def calisan_uygulamalari_listele():
+    surecler = [str(ad).strip() for ad in calisan_surecler() if str(ad).strip()]
+    benzersiz = sorted(set(surecler), key=str.casefold)
+    return sonuc(True, f"{len(benzersiz)} calisan process bulundu.", benzersiz)
+
+
+def guvenli_yetenekleri_listele():
+    actions = [
+        "open_app", "close_app", "open_recycle_bin", "open_settings",
+        "open_desktop", "open_documents", "open_downloads", "web_search",
+        "open_url", "lock_pc", "shutdown_pc", "restart_pc", "cancel_shutdown",
+        "open_godot_test", "find_local", "open_parent", "create_folder",
+        "copy_local", "move_local", "rename_local", "delete_local",
+        "app_status", "list_running_apps", "disk_info", "known_folders",
+        "file_metadata", "capabilities",
+    ]
+    return sonuc(True, f"Jarvis {len(actions)} temel action sunuyor.", {"actions": actions})
+
+
 def araci_calistir(
     action,
     args=None,
@@ -1864,6 +1981,10 @@ def araci_calistir(
 
         return kapatmayi_iptal_et()
 
+    if action == "app_status":
+        return uygulama_durumu_sorgula(args.get("app", ""))
+
+
     # --------------------------------------------------------
     # GODOT
     # --------------------------------------------------------
@@ -1958,10 +2079,27 @@ def araci_calistir(
             confirmed=confirmed
         )
 
+    if action == "disk_info":
+        return disk_bilgisi()
+
+    if action == "file_metadata":
+        return yerel_hedef_metalari(args.get("query", ""))
+
+    if action == "known_folders":
+        return bilinen_klasorleri_goster()
+
+    if action == "list_running_apps":
+        return calisan_uygulamalari_listele()
+
+    if action == "capabilities":
+        return guvenli_yetenekleri_listele()
+
     return sonuc(
         False,
         f"Bilinmeyen Jarvis aracı: {action}"
     )
+
+
 
 
 # ============================================================
@@ -2149,4 +2287,48 @@ ONEMLI KURALLAR:
 - Parola, API anahtari veya ozel veriyi kendiliginden okuma.
 - Ana Cemil Godot projesini degistirme.
 - Ucretli Higgsfield islemini kendiliginden baslatma.
+
+
+app_status
+args:
+{"app":"uygulama adi"}
+
+Bir uygulamanin calisip calismadigini read-only sorgular. Yalnizca kullanici acikca sorarsa kullan.
+
+
+disk_info
+args:
+{}
+
+Disk toplam/kullanilan/bos alan bilgisini read-only verir. Yalnizca kullanici disk alanini acikca sorarsa kullan.
+
+
+known_folders
+args:
+{}
+
+Temel kullanici klasorlerinin yollarini read-only verir. Yalnizca kullanici bu yolları acikca sorarsa kullan.
+
+
+file_metadata
+args:
+{"query":"dosya veya klasor"}
+
+Belirli bir dosya veya klasorun metadata bilgisini read-only verir. Dosya icerigini okumaz; yalnizca kullanici acikca isterse kullan.
+
+
+list_running_apps
+args:
+{}
+
+Calisan uygulama/process adlarini read-only listeler. Yalnizca kullanici acikca isterse kullan.
+
+
+capabilities
+args:
+{}
+
+Jarvis'in kullaniciya sunabildigi temel yetenekleri read-only listeler. Yalnizca kullanici Jarvis'in neler yapabildigini acikca sorarsa kullan.
 """
+
+
