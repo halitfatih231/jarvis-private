@@ -178,3 +178,31 @@ git pull
   dosya silme/taşıma ve kodu dışarı yayınlama.
 - Bu bulut oturumunda yanlış söylenen bir şey düzeltildi: "arama sonucuna tıklama aracı yok" denmişti. Araç var
   (`browser_click_semantic`), yalnızca bazı cümleleri tanımıyordu. TASK-150'de bu cümleler de eklendi.
+
+
+---
+
+## EK (2026-10-05): Araştırma modu — dal `cloud/research`
+
+Bu ek, yerel oturumun TASK-151 ve canlı denemesinden **sonra** bulutta yazıldı. Bulut, TASK-151'i görmedi (repoda yoktu).
+
+**Ne var:** `Dev/jarvis_research.py` (TASK-152)
+- "araştır", "internetten bak", "kaynak bul": **hızlı** araştırma. Gemini + Google Arama, kısa cevap ve en çok 5 kaynak adresi.
+- "detaylı / derinlemesine / kapsamlı araştır": **derin** araştırma. Claude yalnızca WebSearch ve WebFetch araçlarıyla, izole
+  çalışır. Hızlı araştırma başarısız olursa ya da günlük sınır dolarsa da Claude devreye girer.
+- **Kart bağlı:** Her Gemini arama çağrısı yapılmadan önce sayılır (`E:\Jarvis\Data\research\usage.json`). Günlük sınır
+  `JARVIS_RESEARCH_DAILY`, varsayılan 30. Sınır dolunca o gün Gemini'ye hiç sorulmaz.
+- "bir araştır bakalım" tek başına söylenirse bir önceki mesajın konusu araştırılır.
+- Kapatma anahtarı: `JARVIS_RESEARCH=0`.
+- Bulutta Claude ile derin araştırma gerçekten denendi: 12 sn, kaynaklı cevap. Gemini + Google yolu denenemedi (anahtar yok).
+
+**Yerelde yapılacaklar**
+1. Önce yerel TASK-151 değişikliklerini ve başlatıcı değişikliğini repoya al: `cloud/fixes-2` üzerine yeni bir dal aç ya da
+   `cloud/research` ile birleştir. Çakışma beklenen yerler `jarvis_core.py`, `_milestone_user_visible_regression.py` ve
+   `CLAUDE_REPORT.md`; hepsi küçük ve ayrı bloklar.
+2. Birleştirilmiş kodu Dev'e al ve tam regresyonu koş. `turkish_eval.py` sonucu 175 cümlede 0 yanlış olmalı.
+3. Dev'de bir kez dene: "yabancı dil olarak Türkçe öğretimi kaynaklarını araştır".
+   - Kaynaklı cevap gelmeli.
+   - `usage.json` dosyasında bugünün sayısı 1 olmalı.
+   - "detaylı araştır" ile Claude yolunu da dene.
+4. Google AI Studio'da faturalandırma sayfasından gerçek maliyeti bir hafta izle.
