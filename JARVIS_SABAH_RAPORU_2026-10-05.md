@@ -132,3 +132,17 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - "not defterini aç ve merhaba yaz": Jarvis'in programların içine yazı yazacak aracı yok. Artık hiçbir şey yapmadan bunu
   açıkça söylüyor.
 - Linux'ta 130/192 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/fixes-8`.**
+
+## EK 5: `cloud/dictation` — TASK-160, dikte ve yetenek incelemesi
+
+- Jarvis artık Not Defteri, Word ve WordPad'e yazabiliyor:
+  - "not defterine X yaz" metni olduğu gibi yazar.
+  - "not defterine bir şiir yaz" önce metni üretir, sonra yazar.
+  - "dikte başlat" ile her mesajın bir satır olarak yazıldığı dikte modu açılır, "dikte bitti" ile kapanır.
+- Güvenlik:
+  - Yalnızca bu üç programa ve yalnızca harf/Enter yazar.
+  - Kısayol tuşu basamaz.
+  - Pencere değişirse hemen durur.
+- Gerçek Windows'ta henüz denenmedi.
+- Yetenek incelemesi: `docs/CLAUDE_YETENEKLERI_JARVIS.md`.
+- **En yeni dal artık `cloud/dictation`.**
