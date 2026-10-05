@@ -122,3 +122,13 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - Hâlâ modele bağlı olanlar (model yoksa hiçbir şey yapmıyor, yanlış iş de yapmıyor): "google aç beşiktaş ara", "chrome'u aç,
   sonra kapat", "not defterini aç ve merhaba yaz".
 - Linux'ta 129/191 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/fixes-7`.**
+
+## EK 4: `cloud/fixes-8` — TASK-159, modele bağlı kalan üç cümle
+
+- "google aç beşiktaş ara", "youtube'u aç tarkan ara": artık modelsiz çalışıyor. İlk sürüm bir yan etki yaptı:
+  "google'a gir ve openai yaz ve ara" cümlesini "ve openai yaz ve" diye bir aramaya çeviriyordu. Eski testler bunu yakaladı,
+  düzeltildi ve teste eklendi.
+- "chrome'u aç, sonra kapat": aynı cümlede adı geçen programı kapatıyor. Önceki konuşmadan kalan bir programı asla kapatmıyor.
+- "not defterini aç ve merhaba yaz": Jarvis'in programların içine yazı yazacak aracı yok. Artık hiçbir şey yapmadan bunu
+  açıkça söylüyor.
+- Linux'ta 130/192 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/fixes-8`.**
