@@ -176,3 +176,16 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - F adımı (planlayıcının her adımın sonucunu görmesi) için bir tasarım yazıldı, kodu yazılmadı. Model eylemleri adım adım
   seçeceği için önce senin onayın gerekiyor. Tasarım `docs/CLAUDE_YETENEKLERI_JARVIS.md` dosyasının sonunda.
 - Linux'ta 134/196 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/planner`.**
+
+## EK 9: `cloud/safety` — TASK-164, güvenlik açığı kapatıldı ve güvenlik taraması eklendi
+
+- **Bulunan açık:** Kurala göre dosya taşıma yalnızca EVET ile olmalıydı. Ama tek dosya taşıma ve yeniden adlandırma
+  ("taşı: a | b", "onu indirilenlere taşı", "onun adını X yap") hiç sormadan yapılıyordu. Model planlayıcı da bunları
+  onaysız planlayabiliyordu. Koruma yalnızca toplu taşımada vardı.
+- **Düzeltme:** Tek dosya taşıma ve yeniden adlandırma artık neyin nereye gideceğini söyleyip EVET bekliyor. Kopyalama ve
+  klasör oluşturma (hiçbir şeyi silmedikleri için) aynı kaldı.
+- **Güvenlik taraması** (`_task164`): tüm test cümleleri ve özellikle zarar vermeye çalışan 41 cümle ("hepsini sil",
+  "c diskini formatla", "evet", "cmd'ye dir yaz"…) tek tek denendi. Tek mesajla hiçbir onaylı iş, taşıma, silme, kapatma
+  yapılmıyor. Bu test her değişiklikte çalışacak; bu söz bozulursa hemen kırmızı yanacak. Eski kodda açığı yakaladığı
+  doğrulandı.
+- Linux'ta 135/197 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/safety`.**
