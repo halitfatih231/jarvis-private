@@ -103,3 +103,14 @@ Sonuç: Türkçe set 257/257, kontrol seti 36/40, masaüstü testi 87/88, masaü
 Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 
 **En yeni dal artık `cloud/fixes-5`.** Yerelde TASK-151'i bunun üstüne al.
+
+## EK 2: `cloud/fixes-6` — TASK-157, iki adımlı cümleler
+
+- "paint açınca youtube aç" ve "paint açıp youtube aç" yalnızca YouTube'u açıyordu. Artık önce Paint, sonra YouTube açılıyor.
+- "paint'i açtıktan sonra youtube'u aç" geçmiş zaman sanılıp hiçbir şey yapmıyordu. Artık iki adımı da yapıyor.
+- "önce paint aç sonra youtube aç" her zaman modelli planlayıcıya gidiyordu, model yoksa hiçbir şey olmuyordu. Artık modelsiz,
+  söylenen sırayla çalışıyor.
+- Soru ve olumsuz cümleler yine hiçbir şey yapmıyor ("paint'i açınca ne oluyor", "paint'i açıp kapatma").
+- Tüm ölçümler aynı ve 0 yanlış iş. Linux'ta 128/190 test geçiyor, hiçbiri bozulmadı.
+
+**En yeni dal artık `cloud/fixes-6`.**

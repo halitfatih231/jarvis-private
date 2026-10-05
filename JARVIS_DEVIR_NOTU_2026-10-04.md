@@ -215,5 +215,5 @@ Ayrıntılar: `docs/SABAH_RAPORU_2026-10-05.md`. Kısaca:
 - TASK-153 (canlı oturum hataları), TASK-154 (son anlaşılmayan cümleler), TASK-155 (82 yeni cümle, 40 cümlelik kontrol seti,
   bulunan 9 yanlış işin düzeltilmesi).
 - Türkçe set 257/257, 0 yanlış iş. Kontrol seti 36/40, 0 yanlış iş. Masaüstü testi 87/88.
-- En yeni dal `cloud/fixes-5` (TASK-156, gözden geçirme) hepsini içerir. Yerelde: TASK-151'i bunun üstüne al, Windows'ta tam regresyonu koş,
+- En yeni dal `cloud/fixes-6` (TASK-157, iki adımlı cümleler) hepsini içerir. Yerelde: TASK-151'i bunun üstüne al, Windows'ta tam regresyonu koş,
   sonra Dev'de dene. App'e taşıma yalnızca kullanıcının açık onayıyla.
