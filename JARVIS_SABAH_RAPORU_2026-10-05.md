@@ -114,3 +114,11 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - Tüm ölçümler aynı ve 0 yanlış iş. Linux'ta 128/190 test geçiyor, hiçbiri bozulmadı.
 
 **En yeni dal artık `cloud/fixes-6`.**
+
+## EK 3: `cloud/fixes-7` — TASK-158, virgülle ayrılmış komutlar
+
+- "paint aç, hesap makinesi aç" modelli planlayıcıya gidiyordu. Artık modelsiz, sırayla çalışıyor.
+- 16 farklı çok adımlı cümle denendi. Hiçbiri bir adımı sessizce atlamıyor.
+- Hâlâ modele bağlı olanlar (model yoksa hiçbir şey yapmıyor, yanlış iş de yapmıyor): "google aç beşiktaş ara", "chrome'u aç,
+  sonra kapat", "not defterini aç ve merhaba yaz".
+- Linux'ta 129/191 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/fixes-7`.**
