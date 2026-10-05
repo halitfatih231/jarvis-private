@@ -189,3 +189,10 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
   yapılmıyor. Bu test her değişiklikte çalışacak; bu söz bozulursa hemen kırmızı yanacak. Eski kodda açığı yakaladığı
   doğrulandı.
 - Linux'ta 135/197 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/safety`.**
+
+## EK 10: `cloud/screen-read` — TASK-165, ilk "göz"
+
+- "not defterinde ne yazıyor" / "not defterini oku": Jarvis Not Defteri'ndeki yazıyı okuyup gösteriyor. Yalnızca okuyor.
+  Okunan metin hiçbir modele gitmiyor (bu bir testle kontrol ediliyor).
+- Dikteden sonra Jarvis yazdığını geri okuyor. Gördüyse "yazdım ve pencerede gördüm", göremediyse dürüstçe bunu söylüyor.
+- Birleştirme ve deneme rehberi: `docs/BIRLESTIRME_VE_DENEME.md`. **En yeni dal artık `cloud/screen-read`.**

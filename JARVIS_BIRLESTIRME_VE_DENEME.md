@@ -5,8 +5,8 @@ izleyebilir. **App'e dokunulmaz.** App'e taşıma en sonda ve yalnızca senin a�
 
 ## 0. Bilinmesi gerekenler
 
-- Bulut dalları birbirinin üstüne kuruldu. `cloud/safety` en yenisi ve **öncekilerin hepsini içeriyor**: `main`'in üstünde
-  18 commit, 43 dosya. Yalnızca bu tek dalı almak yeterli.
+- Bulut dalları birbirinin üstüne kuruldu. `cloud/screen-read` en yenisi ve **öncekilerin hepsini içeriyor**. Yalnızca bu
+  tek dalı almak yeterli.
 - Yerel **TASK-151** (anlama korumaları) ve başlatıcı değişikliği repoda yok. Bulut onları hiç görmedi. Birleştirmede
   çakışma çıkabilir.
 - Bulutta hiçbir şey gerçek Windows'ta denenmedi. Linux'ta 197 testin 135'i geçiyor; kalanlar Windows ister ve `main`'de de
@@ -21,8 +21,8 @@ git checkout -b local/task-151
 git add -A
 git commit -m "TASK-151 (yerel): anlama korumaları + başlatıcı"
 
-git fetch origin cloud/safety
-git checkout -b birlesik origin/cloud/safety
+git fetch origin cloud/screen-read
+git checkout -b birlesik origin/cloud/screen-read
 git merge local/task-151
 ```
 
@@ -71,6 +71,8 @@ Her satırı dene ve sonucu işaretle. Beklenen olmazsa hemen yaz: **"bu cevabı
 | `not defterine bir şiir yaz` | Kısa bir şiir yazılır, cevapta da görünür |
 | `dikte başlat` → `birinci satır` → `paint'i kapat` → `dikte bitti` | İki satır yazılır, Paint **kapanmaz** |
 | Dikte sırasında başka pencereye tıkla, sonra bir şey yaz | "Pencere değişti, durdum" der, dikte kapanır |
+| `not defterinde ne yazıyor` | Not Defteri'ndeki yazıyı gösterir (TASK-165) |
+| `not defterine deneme yaz` | "... yazdım ve pencerede gördüm" der |
 
 ### Doğrulama (TASK-162)
 | Söyle | Beklenen |

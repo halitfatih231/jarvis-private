@@ -68,7 +68,7 @@ Gizlilik açısından en iyisi 3, en kolayı 1.
 | B | Konuşma hafızası + tercih dosyası + kısaltmalar | bulut | **Yapıldı** (TASK-161): kısaltmalar, notlar, "bir daha yap" |
 | C | Eylem sonrası doğrulama | bulut (kod) + Windows (deneme) | **Yapıldı** (TASK-162): program açma/kapatma. Windows'ta denenmeli |
 | D | Anlama katmanını varsayılan açmak | yerel | Ölçüm var. Karar ve maliyet senin |
-| E | Ekranı okumak (UI Automation) | Windows | Jarvis'in "gözü" |
+| E | Ekranı okumak (UI Automation) | Windows | İlk parça **yapıldı** (TASK-165): Not Defteri okuma + dikte kontrolü |
 | F | Planlayıcının adım sonuçlarını görmesi | bulut | C'den sonra |
 | G | Sesli dikte | senin seçimine göre | Yukarıdaki üç yol |
 
