@@ -165,3 +165,14 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - Kapatınca pencere hâlâ açıksa (örneğin "kaydedilsin mi?" soruyorsa) "kapattım" demiyor, bunu söylüyor.
 - Gerçek Windows'ta henüz denenmedi. Dev'de "paint'i aç", "word'ü aç" ve kaydedilmemiş bir işle "paint'i kapat" denenmeli.
 - Linux'ta 133/195 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/verify`.**
+
+## EK 8: `cloud/planner` — TASK-163, anlama modeline daha fazla bağlam
+
+- Anlama modeli (açıkken) artık şunları görüyor:
+  - son 3 konuşma turu,
+  - en son kullanılan program,
+  - kısaltmaların.
+- Bu sayede "onu", "orayı", "ytö" gibi göndermeleri çözebilir. Özel bilgi içeren turlar isteme girmiyor.
+- F adımı (planlayıcının her adımın sonucunu görmesi) için bir tasarım yazıldı, kodu yazılmadı. Model eylemleri adım adım
+  seçeceği için önce senin onayın gerekiyor. Tasarım `docs/CLAUDE_YETENEKLERI_JARVIS.md` dosyasının sonunda.
+- Linux'ta 134/196 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/planner`.**

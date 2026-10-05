@@ -71,3 +71,30 @@ Gizlilik açısından en iyisi 3, en kolayı 1.
 | E | Ekranı okumak (UI Automation) | Windows | Jarvis'in "gözü" |
 | F | Planlayıcının adım sonuçlarını görmesi | bulut | C'den sonra |
 | G | Sesli dikte | senin seçimine göre | Yukarıdaki üç yol |
+
+Ek (TASK-163): anlama modeli artık daha fazla bağlam görüyor:
+- son 3 konuşma turu,
+- en son kullanılan program,
+- kısaltmaların.
+
+Bu, adım B'nin model tarafı. Özel bilgi içeren turlar ve notlar isteme hiç girmiyor.
+
+## F adımı için tasarım önerisi (senin onayını bekliyor, kodu yazılmadı)
+
+**Bugün:** Planlayıcı tüm adımları baştan yazıyor ("chrome aç, google'a git, X ara, ilk sonuca tıkla") ve sırayla çalıştırıyor.
+Bir adım başarısız olursa duruyor. Ama adımın **sonucuna göre** karar veremiyor. Örneğin "ilk sonuç PDF ise indir, değilse
+ikinciye bak" gibi bir isteği yerine getiremiyor.
+
+**Öneri:** Her adımdan sonra modele yalnızca o adımın kısa sonucu (sayfa başlığı, sonuç adları, açılan pencere başlığı)
+gösterilir. Model bir sonraki adımı seçer ya da "bitti" der. Güvenlik çerçevesi değişmez:
+
+1. **Araç listesi:** Model yine yalnızca bugünkü doğrulanmış listeden seçer. Dosya taşıma/silme yoktur.
+   Kritik işler yine EVET ister.
+2. **Adım sınırı:** En çok 6 adım ve toplam 60 saniye.
+3. **Model yalnızca okur:** Model sayfa içeriğini değil, yalnızca başlıkları görür. Gizli içerik filtresi aynen uygulanır.
+4. **İz kuralı:** Her adımın, kullanıcının cümlesinde bir izi olmalıdır (TASK-153 kuralı). "youtube'a da bak" demediysen
+   YouTube açılmaz.
+5. **Kapatma anahtarı:** Varsayılan KAPALI, `JARVIS_STEPWISE=1` ile açılır. Önce yerelde ölçülür.
+
+**Risk:** Model her adımda seçim yaptığı için yanlış bir tıklama olasılığı artar. Bu yüzden önce kapalı gelir ve önce
+salt okunur araçlarla denenir.
