@@ -82,3 +82,24 @@ Gerçek duruma en yakın sayı, hiç ayarlanmayan **kontrol setindeki 36/40**.
 
 `main` → `cloud/quick-fixes` → `cloud/turkish-eval` → `cloud/understanding` → `cloud/fixes-2` → `cloud/research` →
 `cloud/fixes-3` → `cloud/fixes-4` → **`cloud/eval-2`** (en yeni, hepsini içerir)
+
+---
+
+## EK (sabah, 1 saatlik ek çalışma): `cloud/fixes-5` — TASK-156, gece kurallarının gözden geçirilmesi
+
+Repodaki kod ve testlerde geçen 3.878 cümleyi gece öncesi ve sonrası kodla çalıştırıp karşılaştırdım. 60 cümlenin
+davranışı değişmiş, bunların 58'i istenen değişiklik. İstenmeyen 2 değişiklik ve elle denediğim tuzak cümlelerde
+bulunanlar düzeltildi:
+- "YouTube'da openai ara ve ilk videoyu aç" tamamıyla YouTube'da aranıyordu. YouTube kuralı artık yalnızca "youtube'dan …"
+  biçimini tanıyor ve zincir komutları almıyor.
+- Türüne göre dosya listeleri ("indirilenlerdeki pdf dosyalarını göster") geçici dosyaları gizlemeyi bırakmıştı. Geri geldi.
+- "word'e mesaj yaz" ve "interneti aç" gereksiz yere "yapamıyorum" cevabı alıyordu. Kural daraltıldı.
+- "bir önceki sayfaya dönme" geri gidiyordu. Artık hiçbir şey yapmıyor.
+- "paint'i normale döndür" bir ara geçmiş zaman sanıldı. Düzeltildi, yine komut olarak çalışıyor.
+- "word ve excel'i aç": bilgisayarda bulunamayan ikinci program sessizce atlanıyordu. Artık o da deneniyor ve
+  bulunamazsa açıkça söyleniyor.
+
+Sonuç: Türkçe set 257/257, kontrol seti 36/40, masaüstü testi 87/88, masaüstü kontrol seti **56/58** (önce 54/58).
+Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
+
+**En yeni dal artık `cloud/fixes-5`.** Yerelde TASK-151'i bunun üstüne al.
