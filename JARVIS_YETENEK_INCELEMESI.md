@@ -65,7 +65,7 @@ Gizlilik açısından en iyisi 3, en kolayı 1.
 | Adım | Ne | Nerede | Not |
 |---|---|---|---|
 | A | Dikte + metin üretip yazma | bulut | **Yapıldı** (TASK-160). Windows'ta denenmeli |
-| B | Konuşma hafızası + tercih dosyası + kısaltmalar | bulut | Yerel, modelsiz; en büyük "akıl" kazancı |
+| B | Konuşma hafızası + tercih dosyası + kısaltmalar | bulut | **Yapıldı** (TASK-161): kısaltmalar, notlar, "bir daha yap" |
 | C | Eylem sonrası doğrulama | bulut (kod) + Windows (deneme) | "Yaptım" deyip yapmama sorununun kökten çözümü |
 | D | Anlama katmanını varsayılan açmak | yerel | Ölçüm var. Karar ve maliyet senin |
 | E | Ekranı okumak (UI Automation) | Windows | Jarvis'in "gözü" |

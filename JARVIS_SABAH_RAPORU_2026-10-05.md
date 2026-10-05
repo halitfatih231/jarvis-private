@@ -146,3 +146,14 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - Gerçek Windows'ta henüz denenmedi.
 - Yetenek incelemesi: `docs/CLAUDE_YETENEKLERI_JARVIS.md`.
 - **En yeni dal artık `cloud/dictation`.**
+
+## EK 6: `cloud/memory` — TASK-161, uzun süreli hafıza
+
+- Kısaltma öğretme: "dkö derken dijital kaynaklı öğrenme kastediyorum". "ytö" en baştan biliniyor.
+- Not bırakma: "bunu hatırla: tez danışmanım Ayşe Hoca" ya da "yarın 10'da toplantım var, bunu hatırla".
+- "neleri hatırlıyorsun" hepsini listeler. "dkö'yü unut" / "toplantı notunu unut" siler.
+- Kullanım: kısaltmalar araştırmada açılıyor ("ytö kaynaklarını araştır" artık tam ifadeyle aranıyor). Sohbet modeli de
+  notlarını biliyor.
+- Hepsi yalnızca senin bilgisayarında duruyor. Özel bilgi içeren not hiçbir modele gitmiyor.
+- "bir daha yap" / "tekrarla": son güvenli işi tekrarlar. Yazı yazmayı, tıklamayı ve dosya işlerini asla tekrarlamaz.
+- Linux'ta 132/194 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/memory`.**
