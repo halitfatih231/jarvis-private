@@ -206,3 +206,14 @@ Bu ek, yerel oturumun TASK-151 ve canlı denemesinden **sonra** bulutta yazıld�
    - `usage.json` dosyasında bugünün sayısı 1 olmalı.
    - "detaylı araştır" ile Claude yolunu da dene.
 4. Google AI Studio'da faturalandırma sayfasından gerçek maliyeti bir hafta izle.
+
+---
+
+## EK 2 (2026-10-05 sabah): Gece çalışması — dallar `cloud/fixes-3`, `cloud/fixes-4`, `cloud/eval-2`
+
+Ayrıntılar: `docs/SABAH_RAPORU_2026-10-05.md`. Kısaca:
+- TASK-153 (canlı oturum hataları), TASK-154 (son anlaşılmayan cümleler), TASK-155 (82 yeni cümle, 40 cümlelik kontrol seti,
+  bulunan 9 yanlış işin düzeltilmesi).
+- Türkçe set 257/257, 0 yanlış iş. Kontrol seti 36/40, 0 yanlış iş. Masaüstü testi 87/88.
+- En yeni dal `cloud/eval-2` hepsini içerir. Yerelde: TASK-151'i bunun üstüne al, Windows'ta tam regresyonu koş,
+  sonra Dev'de dene. App'e taşıma yalnızca kullanıcının açık onayıyla.

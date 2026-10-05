@@ -1,0 +1,84 @@
+# Jarvis — gece çalışması sabah raporu (2026-10-05)
+
+Gece yalnızca bulutta çalışıldı. Senin bilgisayarına, App'e ve `main` dalına dokunulmadı. Beyin açılmadı, ücretli
+Gemini çağrısı yapılmadı. Her şey `halitfatih231/jarvis-dev` deposunda, ayrı dallarda duruyor.
+
+## 1. Kısa özet
+
+| Ölçüm | Dün akşam | Bu sabah |
+|---|---|---|
+| Türkçe test seti (175 cümle) | 161 doğru, 0 yanlış iş | **175 doğru**, 0 yanlış iş |
+| Yeni cümleler (82 cümle, ayarlamadan önce ölçüldü) | 67 doğru, **7 yanlış iş** | **82 doğru**, 0 yanlış iş |
+| Kontrol seti (40 cümle, hiç ayarlanmadı) | — | **36 doğru**, 0 yanlış iş (2 yanlış iş vardı, düzeltildi) |
+| Masaüstü testi (88 cümle) | 87 doğru | 87 doğru |
+| Linux'ta geçen eski testler | 124 / 186 | **126 / 188** (hiçbiri bozulmadı; kalanlar Windows ister) |
+
+"Yanlış iş", Jarvis'in yapmaması gereken bir şeyi yapması demek (örneğin "chrome açık kalsın" deyince Chrome'u açması).
+En önemli ölçü bu ve her sette 0.
+
+Uyarı: 175 ve 82 cümlelik setlerde kuralları o cümlelere bakarak düzelttim. Bu yüzden oradaki %100 biraz iyimser.
+Gerçek duruma en yakın sayı, hiç ayarlanmayan **kontrol setindeki 36/40**.
+
+## 2. Gece yapılanlar (dallar sırayla, her biri bir öncekinin üstünde)
+
+### `cloud/fixes-3` — TASK-153 (dün akşamki canlı oturumdan çıkan hatalar)
+- "bundan sonra senin adın ..." artık görev zinciri sanılmıyor. Planlayıcı hata verirse ham hata metni gösterilmiyor.
+- Hata defteri: "bu cevabını hata defterine kaydet" çalışıyor. Ne yazılacağı belli değilse Jarvis soruyor ve bir sonraki
+  mesajını not olarak yazıyor. "hata defterini aç" boşsa toplam kayıt sayısını söylüyor.
+- Sohbet: uydurma bilgi yok, "hocam" diye hitap, argo/lakap yok ("patron", "başkan"). "Bakıyorum", "araştırıyorum",
+  "davet ediyorum" gibi yapmadığı işleri söyleyen cevaplar süzülüyor.
+- "çarpıya bas" pencere sanılmıyor. Modelin önerdiği adımın cümlede bir izi olmalı ("ytö den devam edelim" artık sekme açmıyor).
+
+### `cloud/fixes-4` — TASK-154 (setteki son anlaşılmayan cümleler)
+- Klasör soruları: "masaüstünde ne var", "indirilenlerdeki pdfleri listele", "belgeler klasörü ne kadar yer kaplıyor",
+  "indirilenlerde kopya dosya var mı", "masaüstünde tez diye bir dosya var mı". Hepsi yalnızca okur, hiçbir şeyi değiştirmez.
+- "şu an neler çalışıyor", "bir önceki sayfaya dön", "2. sekmeyi aç" (açık sekmeye geçer, yeni sekme açmaz).
+- "pekii google a beşiktaş yazar mısın?" artık Google'da arıyor.
+- Yapamadığı işler için dürüst cevap: ses, müzik, parlaklık, Wi-Fi/Bluetooth, mail/mesaj →
+  "…yapamıyorum; bunun için bir aracım yok. Hiçbir işlem yapılmadı."
+
+### `cloud/eval-2` — TASK-155 (yeni cümleler ve bulduğu hatalar)
+- Senin konuşma tarzından 82 yeni cümle eklendi: "jarvis …", "kanka", "abi", "bi", "be", Türkçe harfsiz yazım
+  ("chromeu ac"), büyük harf, "araştır" cümleleri. Beklentiler ayarlamadan **önce** yazıldı.
+- Bu cümlelerin bulduğu 7 yanlış iş düzeltildi:
+  - "chrome açık kalsın" → Chrome'u açıyordu
+  - "paint'i kapatmayı unuttum" → Paint'i kapatıyordu
+  - "paint'i açmasan iyi olur" → Paint'i açıyordu
+  - "chrome açıldı mı" → Chrome'u açıyordu
+  - "annemi ara" → Google'da "annemi" arıyordu (artık: "Telefonla arama yapamıyorum")
+  - "jarvis googleda dijital oyunlar ara" → "jarvis googleda dijital oyunlar" diye arıyordu (baştaki "jarvis" artık atılıyor)
+  - "youtube'dan tarkan aç" → yalnızca YouTube'u açıyordu (artık YouTube'da arıyor)
+- Ayrıca: "bilgisayarı kapatır mısın" artık "bilgisayarı kapat" gibi EVET onayı istiyor. "ytö hakkında makale bul"
+  araştırma modunu başlatıyor. "hata defterinde neler var" defteri gösteriyor.
+- Yeni **kontrol seti** (`Dev/turkish_eval_holdout.py`, 40 cümle): kurallar yazıldıktan sonra yazıldı ve kurallar ona göre
+  ayarlanmadı. İlk ölçüm 34/40, 2 yanlış iş. Yalnızca güvenlik için bu 2 yanlış iş düzeltildi:
+  - "not defterini açmana gerek yok" → Not Defteri'ni açıyordu
+  - "paint'i açınca ne oluyor" → Paint'i açıyordu
+  Çalıştırmak için: `python turkish_eval.py --holdout -v`
+
+## 3. Bilerek bırakılanlar
+
+- Kontrol setinde anlaşılmayan 4 cümle (kontrol seti bozulmasın diye kural eklenmedi):
+  "masaüstüne dön", "sayfayı tazele", "indirilenlerde tez diye bir şey var mı" (sohbete düşüyor) ve
+  "bir önceki sayfaya geri git" (soru soruyor). Hiçbiri yanlış iş yapmıyor.
+- Masaüstü kontrol setinde daha önce de olan 2 yanlış iş: "telegramı başlat" (`telegrami` diye bir program açmaya
+  çalışıyor) ve "word ve excel'i aç" (yalnızca Word'ü açıyor). Bunlar uygulama listesine bağlı. Windows'ta bakılmalı.
+- `_task005_tamper_test.py` Linux'ta argümansız çalışınca çöküyor. Main'de de aynısı oluyor, gece yapılanlarla ilgisi yok.
+
+## 4. Senin yapacakların (yerelde, sırayla)
+
+1. **TASK-151'i birleştir.** Yerel TASK-151 değişiklikleri (anlama korumaları) ve başlatıcı değişikliği hâlâ repoda yok.
+   En son dal `cloud/eval-2`, gece yapılanların hepsini içeriyor. TASK-151'i bunun üstüne al.
+   TASK-153'teki "cümlede iz olmalı" koruması TASK-151 ile örtüşebilir. İkisini de tut, daha sıkı olanı geçerli olsun.
+2. Birleşmiş kodu Dev'e al ve tam regresyonu Windows'ta koş. Beklenen:
+   - `python turkish_eval.py` → 257 cümlede 0 yanlış iş.
+   - `python turkish_eval.py --holdout` → 0 yanlış iş.
+3. Dev'de birkaç cümle dene: "chrome açık kalsın" (hiçbir şey olmamalı), "masaüstünde ne var", "sesi kıs"
+   (dürüst "yapamıyorum"), "jarvis youtube'dan tarkan aç".
+4. Araştırma modunu bir kez gerçek anahtarla dene (dünkü devir notundaki adım). `usage.json` sayısı 1 olmalı.
+5. App'e taşıma yalnızca senin açık onayınla yapılır.
+
+## 5. Dallar
+
+`main` → `cloud/quick-fixes` → `cloud/turkish-eval` → `cloud/understanding` → `cloud/fixes-2` → `cloud/research` →
+`cloud/fixes-3` → `cloud/fixes-4` → **`cloud/eval-2`** (en yeni, hepsini içerir)
