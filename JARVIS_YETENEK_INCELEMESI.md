@@ -66,7 +66,7 @@ Gizlilik açısından en iyisi 3, en kolayı 1.
 |---|---|---|---|
 | A | Dikte + metin üretip yazma | bulut | **Yapıldı** (TASK-160). Windows'ta denenmeli |
 | B | Konuşma hafızası + tercih dosyası + kısaltmalar | bulut | **Yapıldı** (TASK-161): kısaltmalar, notlar, "bir daha yap" |
-| C | Eylem sonrası doğrulama | bulut (kod) + Windows (deneme) | "Yaptım" deyip yapmama sorununun kökten çözümü |
+| C | Eylem sonrası doğrulama | bulut (kod) + Windows (deneme) | **Yapıldı** (TASK-162): program açma/kapatma. Windows'ta denenmeli |
 | D | Anlama katmanını varsayılan açmak | yerel | Ölçüm var. Karar ve maliyet senin |
 | E | Ekranı okumak (UI Automation) | Windows | Jarvis'in "gözü" |
 | F | Planlayıcının adım sonuçlarını görmesi | bulut | C'den sonra |

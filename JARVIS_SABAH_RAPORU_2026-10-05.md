@@ -157,3 +157,11 @@ Hepsinde 0 yanlış iş. Linux'ta 127/189 test geçiyor, hiçbiri bozulmadı.
 - Hepsi yalnızca senin bilgisayarında duruyor. Özel bilgi içeren not hiçbir modele gitmiyor.
 - "bir daha yap" / "tekrarla": son güvenli işi tekrarlar. Yazı yazmayı, tıklamayı ve dosya işlerini asla tekrarlamaz.
 - Linux'ta 132/194 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/memory`.**
+
+## EK 7: `cloud/verify` — TASK-162, iş sonrası doğrulama
+
+- Jarvis bir programı açınca artık hemen "açıldı" demiyor. Pencerenin görünmesini en çok 8 saniye bekliyor; görünmezse
+  "başlatıldı ama penceresi görünmedi" diyor.
+- Kapatınca pencere hâlâ açıksa (örneğin "kaydedilsin mi?" soruyorsa) "kapattım" demiyor, bunu söylüyor.
+- Gerçek Windows'ta henüz denenmedi. Dev'de "paint'i aç", "word'ü aç" ve kaydedilmemiş bir işle "paint'i kapat" denenmeli.
+- Linux'ta 133/195 test geçiyor, hiçbiri bozulmadı. **En yeni dal artık `cloud/verify`.**
