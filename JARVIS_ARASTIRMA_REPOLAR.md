@@ -8,6 +8,13 @@ yapısına göre değerlendirildi. Bu yapı iki şeyden oluşuyor:
 **Hiçbiri henüz kurulmadı.** Bulut ortamından Hugging Face'e erişim kapalı (403). Bu yüzden model indirme ve eğitim işleri
 PC'de ya da ağ izni açılınca yapılır. Kod, test ve ölçüm betikleri bulutta yazılabilir.
 
+
+> **Güncelleme (2026-10-06): ölçüldü.** MASSIVE tr-TR'nin 16.520 cümlesi Jarvis'in kurallarından geçirildi (Hugging Face kapalı
+> olduğu için Amazon'un kendi dosyasından indirildi). **Hiçbir cümle zararlı bir iş yaptırmadı** (kapatma, taşıma, silme yok).
+> Bulunan zararsız yanlış anlamalar düzeltildi: "crossword başlat" Word'ü açıyordu, "alarm ayarla" Ayarlar'ı, "programımı göster"
+> çalışan programları listeliyordu (TASK-166). Tarama artık her push'ta Windows CI'da koşuyor. Niyet sınıflandırıcı için
+> gömme modeli Hugging Face ister; o adım erişim açılınca.
+
 ---
 
 ## A. Hemen işe yarayacak 5 bulgu
