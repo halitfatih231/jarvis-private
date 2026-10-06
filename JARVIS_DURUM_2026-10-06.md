@@ -32,6 +32,62 @@ Bu dosya bulutta yapılan son işleri ve bundan sonra ne yapılacağını özetl
 - Bulutta gerçek çekirdekle denendi: yetenekler, güvenlik kapısı ve iptal, masaüstü listesi çalıştı; tarayıcı hatası yok.
   **Gerçek Windows'ta elle henüz denenmedi.**
 
+## Sohbetin geri kalanı (bu turdan önce konuşulanlar)
+
+### Araştırma: Jarvis'i daha akıllı yapacak repolar ve yapay zekâlar
+- Ayrıntılar: bu depoda **`JARVIS_ARASTIRMA_REPOLAR.md`** (2. tur). Başlıklar: hemen işe yarayacak 5 bulgu, üç katmanlı anlama
+  düzeni, tarih/saat anlama, ekranı görme ve kullanma, "yapamıyorum" denen işler, ses, hafıza, tez/akademik işler, güvenlik,
+  benzer projeler, yol haritası.
+- Ana sonuç: aklın asıl geliştiği yer **anlama**. Cümleyi doğru işe çeviren küçük bir **niyet sınıflandırıcı** + kurallar,
+  daha büyük bir modelden daha çok fayda sağlar. Bunun için Hugging Face erişimi gerekiyor (bulutta kapalı).
+
+### OmniRoute işe yarar mı?
+- Ne yapar: birçok model sağlayıcısını tek adrese bağlar, biri çökünce sıradakine geçer.
+- **Karar: şimdilik hayır.** Akıl getirmez (eksik olan anlama). Jarvis zaten kurallar → Qwen → Gemini → Claude sırasıyla
+  yedeğe geçiyor. Ücretsiz sağlayıcılar metni saklayabilir; bu, "özel metin modele gitmez" kuralına aykırı. Bir sunucu ve
+  anahtar kopyası daha ekler. Claude Code'u OmniRoute'a bağlamak da beni akıllandırmaz, zayıf modele düşme riski getirir.
+
+### Cümle setleri (yaklaşık 70.000 cümle)
+| Set | Cümle | Lisans | Nereden |
+|---|---|---|---|
+| MASSIVE tr-TR | 16.520 | CC BY 4.0 | Amazon S3 |
+| Common Voice tr | 52.857 | CC0 | sabit commit `2d46358…` |
+| xSID tr | 800 | CC BY-SA | GitHub |
+
+- Bunlar **güvenlik taraması** için kullanıldı: Jarvis sıradan bir cümleyle zararlı iş yapıyor mu? Sonuç: hiç yapmıyor.
+- Veri setleri repoya konmadı. CI her koşuda indiriyor (`massive_sweep.py`; Common Voice için `--strict --every 4`).
+- "Jarvis için kaç cümle gerekir?" sorusunun cevabı: genel cümleler güvenliği ölçer ama Jarvis'in **kendi işlerini** öğretmez.
+  Bunun için iş başına etiketli cümle gerekiyor. 440 etiketli cümleden **1.478**'e çıkıldı (`command_corpus.py`); hedef ~5.000.
+
+### Anlama düzeltmeleri (Dev/jarvis_router.py, jarvis_desktop_intent.py)
+- Uygulama adı kelime başında olmalı ("ayarlar" bulanık eşleşmez).
+- "Beni yarın ara", "polisi ara" gibi telefon cümleleri web araması yapmaz.
+- "Boş yere", takvim/alarm/not uygulaması soruları disk ya da program durumu sanılmaz.
+- Kibar arama ("… arar mısın"), "… gider misin", "tıklar mısın", "normal boyuta getir", "tekrar eden dosyaları bul",
+  "en büyük klasörler", "bütün pencereleri indir" artık anlaşılıyor.
+- Kaydırma yalnızca cümle tamamen kaydırma kelimelerinden oluşuyorsa çalışır.
+- Cümle sonundaki nokta/ünlem atılır ("?" kalır).
+
+### Ölçümler (son durum)
+| Ölçüm | Sonuç |
+|---|---|
+| turkish_eval | 257/257 tam, WRONG 0 |
+| turkish holdout | 36/40, WRONG 0 |
+| desktop_eval / holdout | 87/88 ve 56/58, WRONG 0 |
+| Komut derlemi | 1466/1478, WRONG 0 |
+| MASSIVE + Common Voice | zararlı eylem 0 |
+| Windows CI | tam regresyon yeşil |
+
+### Windows testleri nasıl kuruldu
+- `.github/workflows/windows-tests.yml`: windows-latest, Python 3.12. `E:` sürücüsü depoya bağlanır, model/ajan/beyin kapalı.
+- `JARVIS_CI=1` yalnızca bu bilgisayara özel iki kontrolü atlar. İlk koşudaki 5 hata düzeltildi
+  (zaman bütçesi, Excel testi, Python yolu).
+
+### Diğer belgeler
+- `JARVIS_SABAH_RAPORU_2026-10-05.md`, `JARVIS_DEVIR_NOTU_2026-10-04.md`, `JARVIS_YETENEK_INCELEMESI.md`,
+  `JARVIS_BIRLESTIRME_VE_DENEME.md` (bu depoda).
+- jarvis-dev içinde `Management/CLAUDE_REPORT.md`: her TASK'ın kaydı (WINCI, 166, 167, 168).
+
 ## Bilgisayarda denemek için
 
 PC'deki Claude oturumuna yapıştırılacak metin:
